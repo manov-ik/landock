@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAN Dock</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <img src="/qr.png" class="qr-desktop" alt="Scan to open on mobile" />
+
+    <main class="app">
+      <header>
+        <img src="./logo-b.png" alt="LAN Dock Logo" class="app-logo" />
+        <div>
+          <h1>LAN Dock</h1>
+          <p>The digital loading bay for your LAN.</p>
+        </div>
+      </header>
+
+      <form id="uploadForm" class="upload-container">
+        <label class="file-select-btn">
+          <input type="file" id="fileInput" multiple hidden />
+          <span id="fileText">Select files...</span>
+        </label>
+        <button type="submit" class="action-btn primary-btn">Upload</button>
+      </form>
+
+      <div class="divider"></div>
+      <template id="file-card-template">
+        <div class="file-card">
+          <div class="thumb-wrapper">
+            <img
+              class="file-thumb"
+              src=""
+              alt="File Thumbnail"
+              loading="lazy"
+            />
+          </div>
+          <div class="file-info">
+            <span class="file-name">filename.jpg</span>
+          </div>
+        </div>
+      </template>
+      <section id="fileList" class="file-list"></section>
+
+      <footer>
+        <p class="app-name">Lan Dock</p>
+        <p>Made with ❤️ by <span class="accent-text">Mano K</span></p>
+        <a
+          href="https://github.com/manov-ik/landock"
+          target="_blank"
+          class="github-link"
+        >
+          View on GitHub ↗
+        </a>
+      </footer>
+    </main>
+    <script src="script.js" defer></script>
+  </body>
+</html>

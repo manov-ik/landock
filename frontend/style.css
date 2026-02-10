@@ -1,0 +1,313 @@
+/* =========================================
+   1. VARIABLES & THEME SETUP
+   ========================================= */
+:root {
+  /* --- LIGHT THEME COLORS --- */
+  --bg-app: #f3f4f6; /* Light Gray (Page Background) */
+  --bg-card: #ffffff; /* Pure White (Cards/Input) */
+  --bg-btn-subtle: #f9fafb; /* Very Light Gray (Icon Buttons) */
+
+  --border-color: #e5e7eb; /* Subtle Border */
+  --border-hover: #d1d5db; /* Darker Border on Hover */
+
+  /* --- TEXT COLORS (High Contrast) --- */
+  --text-main: #111827; /* Nearly Black (Main Text) */
+  --text-muted: #6b7280; /* Dark Gray (Secondary Text) */
+  --text-inverse: #ffffff; /* White (Text on Orange buttons) */
+
+  /* --- ACCENT COLORS (Orange) --- */
+  --accent-primary: #ff4600;
+  --accent-hover: #e63e00;
+
+  /* --- STATUS COLORS --- */
+  --danger-red: #ff1515;
+  --danger-bg: #fee2e2;
+}
+
+/* =========================================
+   2. GLOBAL RESET & TYPOGRAPHY
+   ========================================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Space Mono", monospace; /* Your custom font */
+  background: var(--bg-app);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   3. QR CODE (Top Right Card)
+   ========================================= */
+.qr-desktop {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 140px;
+  height: 140px;
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  text-align: center;
+  display: block;
+}
+
+/* Hide QR on Mobile/Tablets */
+@media (max-width: 900px) {
+  .qr-desktop {
+    display: none;
+  }
+}
+
+/* =========================================
+   4. APP CONTAINER
+   ========================================= */
+.app {
+  width: 100%;
+  max-width: 640px; /* Optimal reading width */
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 480px) {
+  .app {
+    padding: 20px 16px;
+  }
+}
+
+/* --- HEADER --- */
+header {
+  text-align: left;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 16px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-main);
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0px;
+}
+
+.app-logo {
+  width: 64px;
+  height: 64px;
+  margin-bottom: -8px;
+}
+
+/* =========================================
+   5. UPLOAD BAR (The Input Field)
+   ========================================= */
+.upload-container {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  background: var(--bg-card);
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s;
+}
+
+.upload-container:focus-within {
+  box-shadow: 0 0 0 2px rgba(255, 70, 0, 0.2); /* Orange glow focus */
+  border-color: var(--accent-primary);
+}
+
+/* The "Select files..." area */
+.file-select-btn {
+  flex: 1;
+  color: var(--text-main); /* FIXED: Dark text */
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.file-select-btn:hover {
+  background: var(--bg-app);
+}
+
+/* The Orange Upload Button */
+.action-btn {
+  padding: 0 24px;
+  height: 44px; /* Matches visual height */
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: var(--accent-hover);
+}
+
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   6. FILE LIST (The Rows)
+   ========================================= */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 14px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.file-card:hover {
+  border-color: var(--accent-primary); /* Orange border on hover */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.file-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+  flex: 1;
+}
+
+/* --- ACTION BUTTONS (Download/Delete) --- */
+.file-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Base style for icon buttons */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: var(--bg-btn-subtle); /* Light gray bg for visibility */
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+/* Download Button Hover */
+.icon-btn:hover {
+  background: var(--accent-primary);
+  color: white;
+}
+
+/* Delete Button (Red) */
+.delete-btn:hover {
+  background: var(--danger-red);
+  color: white;
+}
+
+/* =========================================
+   7. FOOTER
+   ========================================= */
+footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.app-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.accent-text {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.github-link {
+  display: inline-block;
+  font-size: 11px;
+  text-decoration: none;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.github-link:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin-bottom: 20px;
+  background: var(--border-color);
+}
