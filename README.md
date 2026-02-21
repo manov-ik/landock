@@ -1,4 +1,4 @@
-<img src="./icon1024.png" alt="Lan Dock" width="75">
+<img src="./assets/icon1024.png" alt="Lan Dock" width="75">
 <h1> Lan Dock</h1>
 
 > **The digital loading bay for your LAN.**
