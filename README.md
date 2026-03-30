@@ -9,18 +9,18 @@
 
 ---
 
-## 🚀 Features
+## Features
 
-* **⚡ Zero-Install Client:** Client doesn't need an app. Just scan the QR code or type URL to open the transfer interface in your browser.
-* **🔒 Private by Design:** Transfers happen purely over your Local Area Network (LAN). Your data never leaves your room.
-* **🖥️ Cross-Platform Native App:** Runs natively on **macOS** and **Windows** with a clean, responsive interface.
-* **🚀 Faster speed:** Uses your full local network bandwidth (Wi-Fi/Ethernet) for transfers. No internet speed caps.
-* **🎨 Modern UI:** Responsive modern clean minimal UI.
-* **📦 Single Binary:** One lightweight executable contains everything - frontend, assets, and server.
+* **Zero-Install Client:** Client doesn't need an app. Just scan the QR code or type URL to open the transfer interface in your browser.
+* **Private by Design:** Transfers happen purely over your Local Area Network (LAN). Your data never leaves your room.
+* **Cross-Platform Native App:** Runs natively on **macOS** and **Windows** with a clean, responsive interface.
+* **Faster speed:** Uses your full local network bandwidth (Wi-Fi/Ethernet) for transfers. No internet speed caps.
+* **Modern UI:** Responsive modern clean minimal UI.
+* **Single Binary:** One lightweight executable contains everything - frontend, assets, and server.
 
 ---
 
-## 📥 Downloads
+## Downloads
 
 Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to download the latest version for your OS.
 
@@ -31,7 +31,7 @@ Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to d
 
 ---
 
-## 🛠️ How it Works
+## How it Works
 
 1.  **Run Lan Dock** on your computer and select folder to share.
 2.  **Scan the QR Code** on client (or type the URL).
@@ -39,7 +39,7 @@ Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to d
 
 ---
 
-## 🧑‍💻 Development
+## Development
 
 ### Prerequisites
 * [Go 1.21+](https://go.dev/dl/)
@@ -62,11 +62,11 @@ Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to d
 
 ---
 
-## 🏗️ Building from Source
+## Building from Source
 
 To build standalone executables, we use the `fyne` command line tool and `fyne-cross` (Docker).
 
-### 🍎 macOS (Native Build)
+### macOS (Native Build)
 Run this on a Mac to build the `.app` file:
 ```bash
 cd cmd/desktop
@@ -74,7 +74,7 @@ cd cmd/desktop
 
 ```
 
-### 🪟 Windows (via Docker)
+### Windows (via Docker)
 
 Builds a 64-bit `.exe`:
 
@@ -86,7 +86,7 @@ cd /path/to/projects/landock
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```text
 landock/
 ├── LICENSE
@@ -110,7 +110,7 @@ landock/
 ```
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request.
 
@@ -122,12 +122,12 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the GNU General Public License, Version 3. See `LICENSE` for more information.
 
 
-## ❤️ Credits
+## Credits
 
 * Built with [Go](https://go.dev/) & [Fyne](https://fyne.io/).
 * Web Server powered by [Gin](https://github.com/gin-gonic/gin).
@@ -135,7 +135,7 @@ Distributed under the GNU General Public License, Version 3. See `LICENSE` for m
 * Fonts by [Google Fonts](https://fonts.google.com/)
 
 
-## 💖 Sponsor
+## Sponsor
 
 Building and maintaining open-source tools takes time. If LANDock has made sharing files across your local network easier, you can help keep the project alive by supporting my work.
 
