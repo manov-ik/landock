@@ -17,7 +17,7 @@
 * **Faster speed:** Uses your full local network bandwidth (Wi-Fi/Ethernet) for transfers. No internet speed caps.
 * **Modern UI:** Responsive modern clean minimal UI.
 * **Single Binary:** One lightweight executable contains everything - frontend, assets, and server.
-* **Preview Files:** Files can be previewed without download on website itself.
+* **Instant File Preview:** Preview images, videos, PDFs, and text files directly in your browser - no download required.
 
 ---
 
