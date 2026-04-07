@@ -27,8 +27,8 @@ Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to d
 
 | Platform | File |
 | :--- | :--- |
-| **macOS** | `landock_mac_v1.1.0.zip` |
-| **Windows** | `landock_windows_64_v1.1.0.zip` |
+| **macOS** | `landock_mac_vX.X.X.zip` |
+| **Windows** | `landock_windows_64_vX.X.X.zip` |
 
 ---
 
