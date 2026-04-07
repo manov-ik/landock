@@ -51,6 +51,23 @@
           </div>
         </div>
       </template>
+
+      <!-- Preview Modal -->
+      <div id="previewModal" class="preview-modal" role="dialog" aria-modal="true" aria-label="File Preview">
+        <div class="preview-backdrop" id="previewBackdrop"></div>
+        <div class="preview-panel">
+          <div class="preview-header">
+            <span class="preview-filename" id="previewFilename"></span>
+            <div class="preview-header-actions">
+              <a id="previewDownloadBtn" class="preview-action-btn" title="Download">⬇ Download</a>
+              <button id="previewCloseBtn" class="preview-close-btn" title="Close">✕</button>
+            </div>
+          </div>
+          <div class="preview-body" id="previewBody">
+            <!-- Content injected by JS -->
+          </div>
+        </div>
+      </div>
       <section id="fileList" class="file-list"></section>
 
       <footer>
