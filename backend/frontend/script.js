@@ -5,61 +5,191 @@ const fileText = document.getElementById("fileText");
 const uploadForm = document.getElementById("uploadForm");
 const fileList = document.getElementById("fileList");
 
+// ---------------------------------------------------------------------------
+// RELOAD GUARD — warn before closing/refreshing while uploads are in progress
+// ---------------------------------------------------------------------------
+let uploadsInProgress = 0;
+
+window.addEventListener("beforeunload", (e) => {
+  if (uploadsInProgress > 0) {
+    // Modern browsers show their own generic message; setting returnValue
+    // is still required to trigger the dialog.
+    e.preventDefault();
+    e.returnValue = "Files are still uploading. If you leave, the upload will be cancelled.";
+    return e.returnValue;
+  }
+});
+
 // 1. Update text when files are selected
 fileInput.addEventListener("change", function () {
   if (fileInput.files.length > 0) {
     const count = fileInput.files.length;
-    if (count === 1) {
-      fileText.textContent = fileInput.files[0].name;
-    } else {
-      fileText.textContent = `${count} files selected`;
-    }
-    fileText.style.color = "#111827"; // Use dark text for visibility
+    fileText.textContent = count === 1 ? fileInput.files[0].name : `${count} files selected`;
+    fileText.style.color = "#111827";
   } else {
     fileText.textContent = "Select files...";
-    fileText.style.color = ""; // Reset color
+    fileText.style.color = "";
   }
 });
 
-// 2. Handle Upload
-uploadForm.addEventListener("submit", function (e) {
-  e.preventDefault();
+// ---------------------------------------------------------------------------
+// 2. Parallel Upload Engine
+// ---------------------------------------------------------------------------
+const MAX_CONCURRENT = 4; // upload up to 4 files simultaneously
 
+/**
+ * Upload a single File via XHR so we get upload progress events.
+ * Returns a Promise that resolves when the upload completes.
+ */
+function uploadFile(file, onProgress) {
+  uploadsInProgress++;
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener("progress", (e) => {
+      if (e.lengthComputable) onProgress(e.loaded / e.total);
+    });
+
+    xhr.addEventListener("load", () => {
+      uploadsInProgress--;
+      if (xhr.status >= 200 && xhr.status < 300) {
+        onProgress(1);
+        resolve();
+      } else {
+        reject(new Error(`Server returned ${xhr.status}`));
+      }
+    });
+
+    xhr.addEventListener("error", () => { uploadsInProgress--; reject(new Error("Network error")); });
+    xhr.addEventListener("abort", () => { uploadsInProgress--; reject(new Error("Upload aborted")); });
+
+    const fd = new FormData();
+    fd.append("files", file);
+    xhr.open("POST", "/upload");
+    xhr.send(fd);
+  });
+}
+
+/** Format bytes to a human-readable string */
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+/** Create a progress row element for a single file */
+function createProgressRow(file) {
+  const row = document.createElement("div");
+  row.className = "upload-progress-row";
+
+  const nameEl = document.createElement("span");
+  nameEl.className = "upload-progress-name";
+  nameEl.textContent = file.name.length > 28 ? file.name.slice(0, 25) + "…" : file.name;
+
+  const sizeEl = document.createElement("span");
+  sizeEl.className = "upload-progress-size";
+  sizeEl.textContent = formatBytes(file.size);
+
+  const track = document.createElement("div");
+  track.className = "upload-progress-track";
+
+  const fill = document.createElement("div");
+  fill.className = "upload-progress-fill";
+  fill.style.width = "0%";
+  track.appendChild(fill);
+
+  const pct = document.createElement("span");
+  pct.className = "upload-progress-pct";
+  pct.textContent = "0%";
+
+  const meta = document.createElement("div");
+  meta.className = "upload-progress-meta";
+  meta.appendChild(nameEl);
+  meta.appendChild(sizeEl);
+
+  row.appendChild(meta);
+  row.appendChild(track);
+  row.appendChild(pct);
+
+  const update = (ratio) => {
+    const p = Math.round(ratio * 100);
+    fill.style.width = p + "%";
+    pct.textContent = p + "%";
+    if (p >= 100) {
+      fill.classList.add("upload-progress-done");
+      pct.textContent = "✓";
+    }
+  };
+
+  return { row, update };
+}
+
+// 3. Handle Upload
+uploadForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
   if (!fileInput.files.length) return;
 
-  const originalBtnText = uploadForm.querySelector("button").textContent;
+  const files = Array.from(fileInput.files);
   const btn = uploadForm.querySelector("button");
-
-  // Show loading state
-  btn.textContent = "Uploading...";
+  btn.textContent = "Uploading…";
   btn.disabled = true;
 
-  const data = new FormData();
-  for (let i = 0; i < fileInput.files.length; i++) {
-    data.append("files", fileInput.files[i]);
+  // Build progress UI
+  let progressContainer = document.getElementById("uploadProgressContainer");
+  if (!progressContainer) {
+    progressContainer = document.createElement("div");
+    progressContainer.id = "uploadProgressContainer";
+    progressContainer.className = "upload-progress-container";
+    uploadForm.insertAdjacentElement("afterend", progressContainer);
+  }
+  progressContainer.innerHTML = "";
+
+  const progressRows = files.map((file) => {
+    const { row, update } = createProgressRow(file);
+    progressContainer.appendChild(row);
+    return { file, update };
+  });
+
+  // Concurrency-limited parallel upload queue
+  const queue = [...progressRows];
+
+  async function worker() {
+    while (queue.length) {
+      const { file, update } = queue.shift();
+      try {
+        await uploadFile(file, update);
+      } catch (err) {
+        console.error("Upload failed for", file.name, err);
+      }
+    }
   }
 
-  fetch("/upload", {
-    method: "POST",
-    body: data,
-  })
-    .then(function () {
-      // Reset form
-      fileInput.value = "";
-      fileText.textContent = "Select files...";
-      fileText.style.color = "";
-      loadFiles();
-    })
-    .catch(function (err) {
-      console.error("Upload error:", err);
-      alert("Upload failed.");
-    })
-    .finally(function () {
-      // Reset button
-      btn.textContent = originalBtnText;
-      btn.disabled = false;
-    });
+  // Spawn up to MAX_CONCURRENT workers
+  const workers = Array.from(
+    { length: Math.min(MAX_CONCURRENT, files.length) },
+    () => worker()
+  );
+
+  try {
+    await Promise.all(workers);
+    // Reset form
+    fileInput.value = "";
+    fileText.textContent = "Select files...";
+    fileText.style.color = "";
+    loadFiles();
+  } catch (err) {
+    console.error("Upload batch error:", err);
+    alert("Some files failed to upload.");
+  } finally {
+    btn.textContent = "Upload";
+    btn.disabled = false;
+    // Clear progress UI after a short delay
+    setTimeout(() => {
+      if (progressContainer) progressContainer.innerHTML = "";
+    }, 2000);
+  }
 });
+
 
 // 3. Load and Render Files
 function loadFiles() {

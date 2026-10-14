@@ -11,13 +11,16 @@
 
 ## Features
 
-* **Zero-Install Client:** Client doesn't need an app. Just scan the QR code or type URL to open the transfer interface in your browser.
-* **Private by Design:** Transfers happen purely over your Local Area Network (LAN). Your data never leaves your room.
-* **Cross-Platform Native App:** Runs natively on **macOS** and **Windows** with a clean, responsive interface.
-* **Faster speed:** Uses your full local network bandwidth (Wi-Fi/Ethernet) for transfers. No internet speed caps.
-* **Modern UI:** Responsive modern clean minimal UI.
-* **Single Binary:** One lightweight executable contains everything - frontend, assets, and server.
-* **Instant File Preview:** Preview images, videos, PDFs, and text files directly in your browser - no download required.
+* **Zero-Install Client:** Client doesn't need an app. Just scan the QR code or click the local URL to open the transfer interface in any browser.
+* **Instant File Preview:** Preview images, videos, audio, PDFs, and text files directly in your browser — no download required.
+* **Parallel Multi-File Uploads:** Upload multiple files at once with a concurrency-controlled parallel queue for fast batch transfers.
+* **Real-Time Progress Bars:** Monitor live per-file upload progress, transfer percentages, and human-readable file sizes.
+* **Activity Logs :** Stay in the loop with live transfer logging in the desktop app.
+* **Direct-to-Disk Streaming (Zero RAM Buffering):** Streams incoming uploads directly to disk in 256 KB chunks, easily handling multi-gigabyte files without memory spikes.
+* **Private by Design:** Transfers happen purely over your Local Area Network (LAN). Your data never touches the cloud or leaves your room.
+* **Full Local Speeds:** Takes full advantage of your Wi-Fi/Ethernet local bandwidth with zero artificial throttling or internet dependence.
+* **Cross-Platform Native App:** Clean, modern, and responsive desktop app built natively for **macOS** and **Windows**.
+* **Single Standalone Binary:** One lightweight executable embeds everything — web frontend, custom fonts, icons, and server.
 
 ---
 
@@ -34,9 +37,9 @@ Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to d
 
 ## How it Works
 
-1.  **Run Lan Dock** on your computer and select folder to share.
-2.  **Scan the QR Code** on client (or type the URL).
-3.  **Upload/Download/Delete** files instantly between devices.
+1.  **Run Lan Dock** on your computer and select the folder you want to share.
+2.  **Scan the QR Code** on your phone (or open the local URL on any device).
+3.  **Upload, Download, Preview, or Delete** files instantly between devices!
 
 ---
 
@@ -49,16 +52,16 @@ Go to the [**Releases Page**](https://github.com/manov-ik/landock/releases) to d
 ### Running Locally
 1.  Clone the repo:
     ```bash
-    git clone [https://github.com/manov-ik/landock.git](https://github.com/manov-ik/landock.git)
+    git clone https://github.com/manov-ik/landock.git
     cd landock
     ```
 2.  Install dependencies:
     ```bash
     go mod tidy
     ```
-3.  Run the app:
+3.  Run the desktop app:
     ```bash
-    go run .
+    go run ./cmd/desktop
     ```
 
 ---
